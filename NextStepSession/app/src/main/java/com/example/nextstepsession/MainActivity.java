@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     SharedPreferences pref;
     String server_url = new String("http://192.168.43.85:5000/userAuthenticate1");
-    StringBuilder appendString = new StringBuilder();
+    String appendString = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String uname = username.getText().toString();
                 final String pass = password.getText().toString();
-                appendString.append("?username=").append(uname).append("&password=").append(pass);
+                appendString = "?username="+uname+"&password="+pass;
                 server_url = server_url+appendString;
+                appendString="";
 
                 final RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
 
@@ -72,10 +73,12 @@ public class MainActivity extends AppCompatActivity {
                                         SharedPreferences.Editor editor = pref.edit();
                                         editor.putString("username",uname);
                                         editor.putString("password",pass);
+                                        editor.putInt("userId",(int)jsonObject.get("userId"));
                                         editor.commit();
                                         startActivity(intent);
                                     }
                                     else{
+                                        server_url = "http://192.168.43.85:5000/userAuthenticate1";
                                         responseText.setText(jsonObject.get("message").toString());
                                     }
                                 } catch (JSONException e) {

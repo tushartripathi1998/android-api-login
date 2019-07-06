@@ -45,17 +45,41 @@ tasks = [
 
 credentials = [
     {
+        "userId":0,
         "username":"tushar",
         "password":"abcd",
         "message":"authenticated"
     },
     {
+        "userId":1,
         "username":"john",
         "password":"doe",
         "message":"authenticated"
     }
 ]
 
+bankAccountDetails = [
+    {
+    "account number":18339332,
+    "userId":0,
+    "balance":{
+        "amount":1000.00,
+        "currency":"USD"
+    },
+    "type":"savings"
+    },
+    {
+    "account number":7689589,
+    "userId":1,
+    "balance":{
+        "amount":500.00,
+        "currency":"USD"
+    },
+    "type":"credit"
+    }
+]
+
+userId = len(credentials)
 id=len(tasks);
 
 # endpoint to create new user
@@ -102,6 +126,12 @@ def authenticate():
     if(details==[]):
         details = [{"message":"wrong credentials"}];
     return jsonify(details);
+
+@app.route("/fetchBankDetails")
+def fetchBankDetails():
+    userId = int(request.args.get('userId'));
+    details = [acc for acc in bankAccountDetails if acc['userId']==userId]
+    return jsonify(details);
 # @app.route("/user/<int:id>", methods=["GET"])
 # def user_detail(id):
 #     # user = User.query.get(id)
@@ -135,4 +165,4 @@ def authenticate():
 
 
 if __name__ == '__main__':
-    app.run(host="192.168.43.85",debug=True, port=5000)
+    app.run(host="192.168.43.85",debug=True)
