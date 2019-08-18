@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView responseText;
+    public static TextView responseText;
     EditText username;
     EditText password;
     Button button;
